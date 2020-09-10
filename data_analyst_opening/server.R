@@ -51,5 +51,110 @@ shinyServer(function(input, output) {
                 showlegend = F
             )
     })
+    
+    output$salary.sector <- renderPlotly({
+        master_data_clean %>%
+            mutate(
+                Salary.Estimation = case_when(
+                    input$salary_type == 1 ~ Min.Salary,
+                    input$salary_type == 2 ~ Avg.Salary,
+                    TRUE ~ Max.Salary
+                )
+            ) %>%
+            filter(Sector %in% input$select_sector) %>%
+            plot_ly(
+                x = ~Sector,
+                y = ~Salary.Estimation,
+                split = ~Sector,
+                type = 'violin',
+                box = list(
+                    visible = T
+                ),
+                meanline = list(
+                    visible = F
+                )
+            ) %>%
+            layout(
+                xaxis = list(
+                    visible = T,
+                    showticklabels = F
+                ),
+                yaxis = list (
+                    title = 'Salary Estimation'
+                )
+            )
+    })
+    
+    output$salary.role <- renderPlotly({
+        master_data_clean %>%
+            mutate(
+                Salary.Estimation = case_when(
+                    input$salary_type == 1 ~ Min.Salary,
+                    input$salary_type == 2 ~ Avg.Salary,
+                    TRUE ~ Max.Salary
+                )
+            ) %>%
+            plot_ly(
+                x = ~Role.Level,
+                y = ~Salary.Estimation,
+                color = ~Role.Level,
+                type = 'box',
+                jitter = 0.8,
+                boxpoints = "all",
+                pointpos = 0,
+                marker = list(size=2),
+                text = ~paste0(Role.Level, ' : $' , Salary.Estimation, 'K'),
+                hoverinfo = "text"
+            ) %>%
+            layout (
+                yaxis = list (
+                    title = 'Salary Estimation'
+                ),
+                showlegend = F
+            )
+    })
+    
+    output$company.size <- renderPlotly({
+        master_data_clean %>%
+            filter(Size != 'Unknown') %>%
+            count(Size) %>%
+            plot_ly(
+                x = ~Size,
+                y = ~n,
+                color = ~Size,
+                type='bar',
+                text = ~paste0(Size, ' : ' , n, ' companies'),
+                hoverinfo = "text"
+            ) %>%
+            layout (
+                yaxis = list (
+                    title = 'Number of Openings'
+                ),
+                showlegend = F
+            )
+    })
+    
+    output$company.rating <- renderPlotly(({
+        master_data_clean %>%
+            filter(Rating > 0) %>%
+            plot_ly(
+                x=~Rating,
+                type='histogram',
+                name = 'Histogram'
+            ) %>%
+            add_trace(
+                x=dense$x,
+                y = dense$y,
+                type = 'scatter',
+                mode='lines',
+                fill = "tozeroy", 
+                yaxis = "y2", 
+                name = "Density"
+            ) %>%
+            layout(
+                yaxis2 = list(overlaying = "y", side = "right"),
+                yaxis = list(title='Number of Openings')
+            )
+    }))
 
 })

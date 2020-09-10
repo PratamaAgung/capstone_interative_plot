@@ -141,13 +141,14 @@ master_data_clean %>%
 ```
 
 ```{r}
-master_data_clean %>%
+p1 <- master_data_clean %>%
   filter(Size != 'Unknown') %>%
   count(Size) %>%
   plot_ly(
     x = ~Size,
     y = ~n,
-    color = ~Size
+    color = ~Size,
+    type='bar'
   ) %>%
   layout (
     yaxis = list (
@@ -155,12 +156,13 @@ master_data_clean %>%
     ),
     showlegend = F
   )
+p1
 ```
 
 ```{r}
 dense <- density(master_data_clean[master_data_clean$Rating > 0,]$Rating)
 
-master_data_clean %>%
+p2 <- master_data_clean %>%
   filter(Rating > 0) %>%
   plot_ly(
     x=~Rating,
@@ -180,6 +182,12 @@ master_data_clean %>%
     yaxis2 = list(overlaying = "y", side = "right"),
     yaxis = list(title='Number of Opening')
     )
+
+p2
+```
+
+```{r}
+subplot(p1, p2)
 ```
 
 ```{r}

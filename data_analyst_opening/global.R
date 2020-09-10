@@ -20,7 +20,7 @@ map_data = read.csv('data/uscities.csv')
 # Data Cleansing
 master_data_clean <- 
   master_data %>%
-  select(-Headquarters, -Type.of.ownership, -Competitors, -X, -Easy.Apply) %>%
+  select(-Headquarters, -Type.of.ownership, -Competitors, -X, -Easy.Apply, -Job.Description) %>%
   mutate(
     Location = as.factor(Location),
     Size = ifelse(Size == '-1', 'Unknown', Size),
@@ -36,7 +36,7 @@ master_data_clean <-
     )),
     Sector = ifelse(Sector == '-1', 'Unknown', Sector),
     Sector = as.factor(Sector),
-    Revenue = as.factor(Revenue)
+    Company.Name = substr(Company.Name, 1, nchar(Company.Name) - 3)
   ) %>%
   mutate(
     Age = ifelse(Founded > 0, 2020 - Founded, -1),
