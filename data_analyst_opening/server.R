@@ -135,12 +135,15 @@ shinyServer(function(input, output) {
     })
     
     output$company.rating <- renderPlotly(({
+        dense <- density(master_data_clean[master_data_clean$Rating > 0,]$Rating)
+        
         master_data_clean %>%
             filter(Rating > 0) %>%
             plot_ly(
                 x=~Rating,
                 type='histogram',
-                name = 'Histogram'
+                name = 'Histogram',
+                hovertemplate = "Rating %{x}: %{y} companies"
             ) %>%
             add_trace(
                 x=dense$x,
@@ -149,7 +152,8 @@ shinyServer(function(input, output) {
                 mode='lines',
                 fill = "tozeroy", 
                 yaxis = "y2", 
-                name = "Density"
+                name = "Density",
+                hovertemplate = "Rating %{x}: %{y}"
             ) %>%
             layout(
                 yaxis2 = list(overlaying = "y", side = "right"),
