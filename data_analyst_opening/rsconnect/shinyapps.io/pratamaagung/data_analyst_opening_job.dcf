@@ -5,9 +5,9 @@ account: pratamaagung
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2782596
-bundleId: 3614712
+bundleId: 3614809
 url: https://pratamaagung.shinyapps.io/data_analyst_opening_job/
-when: 1599735732.89196
+when: 1599738211.7674
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: data_process.Rmd

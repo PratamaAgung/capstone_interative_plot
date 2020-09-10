@@ -42,9 +42,11 @@ shinyUI(
                                           max = max(master_data_clean$Avg.Salary, na.rm = T), 
                                           value = c(60, 100)
                               ),
-                              p(em('*in thousands USD')),
+                              p(em('*in thousands USD per year')),
                               
-                              plotlyOutput(outputId = 'map')
+                              fluidRow(
+                                plotlyOutput(outputId = 'map') 
+                              )
                               
                           ),
                           
@@ -72,7 +74,7 @@ shinyUI(
                                     # p(em('Especially when you have several bills to pay :)')),
                                     
                                     radioButtons(
-                                      "salary_type", label = p("Select what kind of estimated salary you want to display (in thousands USD)"),
+                                      "salary_type", label = p("Select what kind of estimated salary you want to display (in thousands USD per year)"),
                                       choices = list("Minimum" = 1, "Average" = 2, "Maximum" = 3), 
                                       selected = 2, inline = T
                                     ),

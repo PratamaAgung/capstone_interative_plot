@@ -153,7 +153,7 @@ shinyServer(function(input, output) {
                 fill = "tozeroy", 
                 yaxis = "y2", 
                 name = "Density",
-                hovertemplate = "Rating %{x}: %{y}"
+                hovertemplate = "Rating %{x:.3f}: %{y}"
             ) %>%
             layout(
                 yaxis2 = list(overlaying = "y", side = "right"),
