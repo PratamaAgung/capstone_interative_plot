@@ -34,6 +34,7 @@ master_data_clean <-
       '5001 to 10000 employees',
       '10000+ employees'
     )),
+    Sector = ifelse(Sector == '-1', 'Unknown', Sector),
     Sector = as.factor(Sector),
     Revenue = as.factor(Revenue)
   ) %>%
@@ -82,16 +83,11 @@ master_data_clean <-
 # Merge data to get latitude and longitude
 master_data_map <- 
   master_data_clean %>%
-  select(Location) %>%
+  select(Location, Avg.Salary) %>%
   separate(Location,
            sep = ', ',
            into = c('city', 'state_id')
-  ) %>% 
-  group_by(city, state_id) %>%
-  summarise(
-    Number.Opening = n()
-  ) %>%
-  ungroup()
+  )
 
 map_opening <-  merge(master_data_map, map_data, by = c('city', 'state_id'))
 
